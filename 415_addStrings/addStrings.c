@@ -16,13 +16,9 @@ char *strrev(char *str)
 #define bigone(A, B) (((A) > (B)) ? (A) : (B))
 
 char* addStrings(char* num1, char* num2) {
-    char* val1 = num1;
-    char* val2 = num2;
-
     unsigned int sum = 0, carry = 0;
 
-    size_t size1 = strlen(val1);
-    size_t size2 = strlen(val2);
+    size_t size1 = strlen(num1), size2 = strlen(num2);
     size_t size = bigone(size1, size2);
     char* retStr = (char *)malloc((size + 2) * sizeof(char));
 
@@ -30,31 +26,16 @@ char* addStrings(char* num1, char* num2) {
     size_t index = 0, index1 = 0, index2 = 0;
 
     while((index1 < size1 || index2 < size2 || carry == 1)) {
-        if(index1 < size1) {
-            digit1 = ((*(val1 + size1 - 1 - index1++)) - 48);
-        }
-        else {
-            digit1 = 0;
-        }
-
-        if(index2 < size2) {
-            digit2 = ((*(val2 + size2 - 1 - index2++)) - 48);
-        }
-        else {
-            digit2 = 0;
-        }
+        digit1 = (index1 < size1) ? ((*(num1 + size1 - 1 - index1++)) - 48) : 0;
+        digit2 = (index2 < size2) ? ((*(num2 + size2 - 1 - index2++)) - 48) : 0;
 
         sum = digit1 + digit2 + carry;
+
         *(retStr + index++) = (sum % 10) + 48;
 
-        if(sum > 9) {
-            carry = 1;
-        }
-        else {
-            carry = 0;
-        }
-        digit1 = 0;
-        digit2 = 0;
+        carry = (sum > 9) ? 1 : 0;
+
+        digit1 = digit2 = 0;
     }
     
     *(retStr + index) = '\0';
